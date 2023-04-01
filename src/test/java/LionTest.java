@@ -1,7 +1,6 @@
 import com.example.Feline;
 import com.example.Lion;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -10,31 +9,34 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.List;
 
+
 @RunWith(MockitoJUnitRunner.class)
 public class LionTest {
 
     @Mock
-    private Feline feline;
-    private Lion lion;
+    Feline feline = new Feline();
 
-    @Before
-    public void beforeTest() throws Exception {
-        lion = new Lion("Самец", feline);
+    @Test
+    public void getKittensReturnsForLion() throws Exception {
+        Lion lion = new Lion("Самка",feline);
+        Mockito.when(feline.getKittens()).thenReturn(1);
+        int expectedKittens = 1;
+        int actualKittens = lion.getKittens();
+        Assert.assertEquals(expectedKittens, actualKittens);
     }
 
     @Test
-    public void getKittensLionTest() {
-        Mockito.when(feline.getKittens()).thenReturn(3);
-        int expectedKittensLion = 3;
-        int actualKittensLion = lion.getKittens();
-        Assert.assertEquals(expectedKittensLion, actualKittensLion);
+    public void getFoodReturnsForLion() throws Exception {
+        Lion lion = new Lion("Самец", feline);
+        List<String> expectedEatMeat = List.of("Животные", "Птицы", "Рыба");
+        Mockito.when(feline.getFood("Хищник")).thenReturn(expectedEatMeat);
+        List<String> actualEatMeat = lion.getFood();
+        Assert.assertEquals(expectedEatMeat, actualEatMeat);
     }
 
-    @Test
-    public void getFoodLionTest() throws Exception {
-        Mockito.when(feline.getFood("Хищник")).thenReturn(List.of("Животные", "Птицы", "Рыба"));
-        List<String> expectedFoodLion = List.of("Животные", "Птицы", "Рыба");
-        List<String> actualFoodLion = lion.getFood();
-        Assert.assertEquals(expectedFoodLion, actualFoodLion);
+    @Test(expected = Exception.class)
+    public void doesHaveManeExceptionTest() throws Exception {
+        Lion lion = new Lion("Unknown", feline);
     }
+
 }

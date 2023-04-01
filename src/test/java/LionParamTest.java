@@ -1,45 +1,34 @@
-import com.example.Feline;
 import com.example.Lion;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.mockito.Mock;
-
+import com.example.Feline;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
 public class LionParamTest {
-
-    private final boolean isMane;
     private final String sex;
+    private final Feline feline;
+    private final boolean isHasMane;
 
-    @Mock
-    private Feline feline;
-    private Lion lion;
-
-    public LionParamTest(String sex, boolean isMane) {
+    public LionParamTest(String sex, boolean isHasMane) {
         this.sex = sex;
-        this.isMane = isMane;
+        this.isHasMane = isHasMane;
+        this.feline = new Feline();
     }
 
-    @Parameterized.Parameters(name = "Тест LionParamTest - {0}")
-    public static Object[] getParameters() {
-        return new Object[][] {
+    @Parameterized.Parameters
+    public static Object[] getDataHasMane() {
+        return new Object[][]{
                 {"Самец", true},
                 {"Самка", false},
-                {"NOT_DEFINED", false},
         };
     }
 
     @Test
-    public void doesHaveManeTest() {
-        try {
-            lion = new Lion(sex, feline);
-            Boolean expectedIsMane = isMane;
-            Boolean actualIsMane = lion.doesHaveMane();
-            Assert.assertEquals(expectedIsMane, actualIsMane);
-        } catch (Exception e) {
-            System.out.println("Неизвестный пол льва");
-        }
+    public void getHaveManeReturns() throws Exception {
+        Lion lion = new Lion(sex, feline);
+        boolean actualHasMane = lion.doesHaveMane();
+        assertEquals(isHasMane, actualHasMane);
     }
 }
